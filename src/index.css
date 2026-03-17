@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
+
+    /* Institutional Blue #1F3A5F → HSL 213 51% 24% */
+    --primary: 213 51% 24%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 213 51% 19%;
+
+    /* Secondary Gray #64748B → HSL 215 16% 47% (More elegant slate) */
+    --secondary: 215 16% 47%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Light gray sections #F8F9FA */
+    --muted: 210 17% 98%;
+    --muted-foreground: 0 0% 31%;
+
+    --accent: 210 17% 95%;
+    --accent-foreground: 213 51% 24%;
+
+    /* CTA Orange #E47223 → HSL 26 77% 52% */
+    --cta: 26 77% 52%;
+    --cta-hover: 26 77% 44%;
+    --cta-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 88%;
+    --input: 214 20% 90%;
+    --ring: 213 51% 24%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  .section-soft {
+    @apply bg-muted;
+  }
+  /* Institutional blue button */
+  .btn-primary {
+    @apply inline-block px-6 py-3 rounded-md font-medium transition-all duration-500 ease-premium;
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 0 4px 14px 0 rgba(31, 58, 95, 0.25);
+  }
+  .btn-primary:hover {
+    background-color: hsl(var(--primary-hover));
+    box-shadow: 0 6px 20px rgba(31, 58, 95, 0.35);
+    transform: translateY(-1px);
+  }
+  /* Orange CTA button */
+  .btn-cta {
+    @apply inline-block px-6 py-3 rounded-md font-medium transition-all duration-500 ease-premium;
+    background-color: hsl(var(--cta));
+    color: hsl(var(--cta-foreground));
+    box-shadow: 0 4px 14px 0 rgba(228, 114, 35, 0.3);
+  }
+  .btn-cta:hover {
+    background-color: hsl(var(--cta-hover));
+    box-shadow: 0 6px 20px rgba(228, 114, 35, 0.4);
+    transform: translateY(-1px);
+  }
+  .btn-outline-primary {
+    @apply border-2 px-6 py-3 rounded-full font-medium transition-all duration-300;
+    border-color: hsl(var(--primary));
+    color: hsl(var(--primary));
+  }
+  .btn-outline-primary:hover {
+    background-color: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+  .card-service {
+    @apply bg-card rounded-xl overflow-hidden shadow-sm border border-border/60 transition-all duration-500 ease-premium;
+  }
+  .card-service:hover {
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.08);
+  }
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:border-transparent transition-all duration-200;
+    --tw-ring-color: hsl(var(--cta) / 0.3);
+  }
+  .section-title {
+    @apply text-3xl md:text-4xl font-semibold text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+  .section-subtitle {
+    @apply text-muted-foreground max-w-2xl mx-auto leading-relaxed;
+  }
+  .icon-cta {
+    color: hsl(var(--cta));
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
