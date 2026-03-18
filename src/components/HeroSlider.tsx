@@ -8,27 +8,7 @@ const HeroImage = () => {
   return (
     <section
       id="home"
-      className="relative w-full min-h-[100vh] overflow-hidden bg-white pt-24 pb-32 md:pt-32 md:pb-25 flex flex-col items-center justify-center"
-
-    >
-
-      {/* IMAGEN DE FONDO */}
-      {/* Cambiar opacity-30 para modificar la transparencia */}
-      <img
-        src="/Hero-image-2.png"
-        alt="Tecnología empresarial"
-        className="absolute inset-0 w-full h-full object-cover opacity-80" />
-
-      {/* GRADIENTE INFERIOR */}
-      {/* Hace que la imagen se desvanezca hacia blanco */}
-      {/* Cambiar h-60 si querés un fade más largo o más corto */}
-      <div className="absolute bottom-0 left-0 w-full h-60 bg-gradient-to-b from-transparent to-white z-0"></div>
-
-
-      {/* LUCES DECORATIVAS */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[400px] bg-[radial-gradient(ellipse_at_top,rgba(31,58,95,0.08)_0%,transparent_70%)] z-0 blur-3xl pointer-events-none" />
-
-      <div className="absolute top-40 right-10 w-[30vw] h-[30vw] min-w-[300px] bg-[#E47223]/5 rounded-full blur-3xl -z-10 pointer-events-none" />
+      className="relative w-full min-h-[100vh] overflow-hidden bg-white pt-24 pb-32 md:pt-32 md:pb-10 flex flex-col items-center justify-center">
 
 
       {/* CONTENIDO */}
@@ -117,7 +97,7 @@ const HeroImage = () => {
               ))}
             </div>
 
-            <p className="text-sm text-white shadow-lg font-semibold text-gray-500">
+            <p className="text-sm text-black shadow-lg font-semibold text-gray-500">
               Más de 25 años acompañando a empresas.
             </p>
 

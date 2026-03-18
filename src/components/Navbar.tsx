@@ -65,19 +65,11 @@ const Navbar = () => {
 
           {/* LOGO */}
           <a href="#home" className="flex items-center h-full">
-            {scrolled ? (
-              <img
-                src="/logo-tuaiti-main.svg"
-                alt="TUAITI – Technology for Businesses"
-                className="h-14 md:h-16 w-auto object-contain"
-              />
-            ) : (
-              <img
-                src="/logo-tuaiti-main-inverse.svg"
-                alt="TUAITI – Technology for Businesses"
-                className="h-14 md:h-16 w-auto object-contain"
-              />
-            )}
+            <img
+              src="/logo-tuaiti-woodmark.svg"
+              alt="TUAITI – Technology for Businesses"
+              className="h-16 md:h-20 w-auto object-contain"
+            />
           </a>
 
           {/* DESKTOP NAV (movido a la derecha) */}

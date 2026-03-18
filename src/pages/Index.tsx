@@ -15,9 +15,8 @@ const Index = () => {
       <HeroSlider />
       <AboutSection />
       <ServicesSection />
-      <ExpertiseSection />
-      <ContactSection />
       <ComoTrabajamos />
+      <ContactSection />
       <CtaBannerSection />
       <Footer />
     </div>

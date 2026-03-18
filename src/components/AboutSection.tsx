@@ -33,8 +33,8 @@ const AboutSection = () => {
             {/* Elegant Modern Soft Glows */}
             <div
               className="absolute -bottom-10 -right-10 w-64 h-64 rounded-full -z-10 blur-3xl opacity-30"
-              style={{ backgroundColor: "#1F3A5F" }}
-            />
+              style={{ backgroundColor: "#1F3A5F" }} />
+
             <div
               className="absolute -top-10 -left-10 w-48 h-48 rounded-full -z-10 blur-3xl opacity-20"
               style={{ backgroundColor: "#E47223" }}
@@ -62,7 +62,6 @@ const AboutSection = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
             viewport={{ once: true }}
           >
-
 
             <h2 className="section-title mb-6">
               Sobre{" "}
