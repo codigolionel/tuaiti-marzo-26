@@ -65,7 +65,7 @@ const ContactSection = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Llamanos al: +54 9 11 3511-7785
+                  Llamanos al: +54 9 11-3511-7785
                 </a>
               </p>
 
