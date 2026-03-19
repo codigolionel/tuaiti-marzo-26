@@ -24,16 +24,6 @@ El backend está hecho y probado localmente. Es un servidor en Node.js que recib
 - Verifica reCAPTCHA antes de procesar
 - Manda el email
 
-**Lo que falta configurar (solo el `.env`):**
-El archivo `.env.example` en la carpeta `backend` tiene las variables que hay que completar. Necesitás conseguir:
-- Las claves de **Google reCAPTCHA** — van ligadas al dominio real del sitio, hay que generarlas en https://www.google.com/recaptcha
-- Un email desde el cual se van a enviar los mensajes (y su contraseña o app password si es Gmail)
-
-⚠️ El archivo `.env` no está en Git (es privado). Te lo mando aparte.
-Cuando lo tengas, lo pegás adentro de la carpeta `/backend`, al mismo nivel que el `server.js`. Tiene que quedar así:
-
-
-
 ```
 Mindthera/
   backend/
