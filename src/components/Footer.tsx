@@ -2,25 +2,28 @@ const Footer = () => {
   return (
     <footer style={{ background: "linear-gradient(135deg, #1F3A5F 0%, #0f1e30 50%, #0a0f1a 100%)" }} className="text-white">
       <div className="container mx-auto py-14">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
           {/* Column 1: Logo & Description */}
-          <div className="lg:col-span-2">
-            <a href="#home" className="flex items-center mb-5">
+          <div className="lg:col-span-4 flex flex-col items-start pr-4">
+            <a href="#home" className="inline-block mb-6">
               <img
                 src="/logo-tuaiti-main-inverse.svg"
                 alt="TUAITI – Technology for Businesses"
-                className="h-20 w-auto"
+                className="h-16 w-auto object-contain"
               />
             </a>
-            <p className="text-white/60 text-sm leading-relaxed max-w-xs">
+            <p className="text-white/70 text-sm leading-relaxed max-w-md font-medium">
               Soporte tecnológico gestionado para empresas. Ayudamos a las empresas a mantener la continuidad operativa y a tomar las decisiones tecnológicas adecuadas.
             </p>
           </div>
 
-          {/* Column 3: Navigation */}
-          <div>
-            <h4 className="font-semibold mb-4 text-white">Navegación</h4>
-            <ul className="space-y-2">
+          {/* Spacer */}
+          <div className="hidden lg:block lg:col-span-1"></div>
+
+          {/* Column 2: Navigation */}
+          <div className="lg:col-span-2">
+            <h4 className="font-semibold mb-6 text-white text-lg tracking-wide">Navegación</h4>
+            <ul className="space-y-3">
               {[
                 { label: "Inicio", href: "#home" },
                 { label: "Sobre Nosotros", href: "#about" },
@@ -30,7 +33,7 @@ const Footer = () => {
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-white/60 hover:text-white transition-colors"
+                    className="text-sm font-medium text-white/60 hover:text-white hover:translate-x-1 inline-block transition-all duration-300"
                   >
                     {link.label}
                   </a>
@@ -39,10 +42,10 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Column 4: Services */}
-          <div>
-            <h4 className="font-semibold mb-4 text-white">Servicios</h4>
-            <ul className="space-y-2">
+          {/* Column 3: Services */}
+          <div className="lg:col-span-5">
+            <h4 className="font-semibold mb-6 text-white text-lg tracking-wide">Servicios</h4>
+            <ul className="space-y-3">
               {[
                 "Servidores siempre bajo control",
                 "Tu correo y archivos, siempre disponibles",
@@ -54,7 +57,7 @@ const Footer = () => {
                 <li key={service}>
                   <a
                     href="#services"
-                    className="text-sm text-white/60 hover:text-white transition-colors"
+                    className="text-sm font-medium text-white/60 hover:text-white hover:translate-x-1 inline-block transition-all duration-300"
                   >
                     {service}
                   </a>

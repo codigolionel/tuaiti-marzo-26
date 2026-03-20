@@ -105,7 +105,9 @@ const Navbar = () => {
               </p>
 
               <a
-                href="tel:+5491135117785"
+                href="https://wa.me/5491135117785"
+                target="_blank"
+                rel="noopener noreferrer"
                 className={`text-sm font-semibold text-black`}
               >
                 +54 9 11 3511-7785
@@ -113,7 +115,9 @@ const Navbar = () => {
             </div>
 
             <a
-              href="#contact"
+              href="https://wa.me/5491135117785"
+              target="_blank"
+              rel="noopener noreferrer"
               className="bg-[#E47223] hover:bg-[#c95f1a] text-white text-sm font-medium px-5 py-2.5 rounded-md transition-colors duration-200"
             >
               Contacto
@@ -155,7 +159,9 @@ const Navbar = () => {
 
               <motion.a
                 variants={itemVariants}
-                href="#contact"
+                href="https://wa.me/5491135117785"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
                 className="mt-6 bg-[#E47223] hover:bg-[#c95f1a] text-white px-6 py-2.5 rounded-md font-medium transition-colors"
               >

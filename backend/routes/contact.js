@@ -4,10 +4,10 @@ const router = express.Router();
 
 router.post('/contact', async (req, res) => {
   try {
-    const { name, contact, service, message, token } = req.body;
+    const { name, contact, message, token } = req.body;
 
     // 1. Validar campos obligatorios (no confiar en el frontend)
-    if (!name || !contact || !service || !message || !token) {
+    if (!name || !contact || !message || !token) {
       console.log('Error: Validación fallida - Campos faltantes en la petición');
       return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
     }
@@ -41,7 +41,7 @@ router.post('/contact', async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER, // Enviar al mismo correo
-      subject: `Nuevo Lead Comercial: ${service} - ${name}`,
+      subject: `Nuevo Lead Comercial: ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #0044cc; color: white; padding: 20px; text-align: center;">
@@ -57,10 +57,6 @@ router.post('/contact', async (req, res) => {
               <tr>
                 <td style="padding: 12px 10px; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">Contacto (Email/Tel):</td>
                 <td style="padding: 12px 10px; border-bottom: 1px solid #eee; color: #555;">${contact}</td>
-              </tr>
-              <tr>
-                <td style="padding: 12px 10px; border-bottom: 1px solid #eee; font-weight: bold; color: #333;">Servicio:</td>
-                <td style="padding: 12px 10px; border-bottom: 1px solid #eee; color: #555;">${service}</td>
               </tr>
               <tr>
                 <td style="padding: 12px 10px; font-weight: bold; color: #333; vertical-align: top;">Mensaje:</td>

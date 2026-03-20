@@ -19,8 +19,8 @@ const CtaBannerSection = () => {
           {/* Main Background with pure CSS gradient instead of relying on local publish.webp */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ 
-              background: "linear-gradient(135deg, #1A1C1D 0%, #1F3A5F 50%, #0f1d5e 100%)" 
+            style={{
+              background: "linear-gradient(135deg, #1A1C1D 0%, #1F3A5F 50%, #0f1d5e 100%)"
             }}
           />
 
@@ -52,7 +52,7 @@ const CtaBannerSection = () => {
               viewport={{ once: true }}
               className="text-3xl md:text-4xl lg:text-5xl text-white font-extrabold leading-[1.15] max-w-4xl mb-8 tracking-tight"
             >
-              Si la tecnología de tu empresa te genera más problemas que soluciones,{" "}
+              ¿Tu tecnología te da más problemas que soluciones?{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-[#E47223]">
                 podemos ayudarte.
               </span>
@@ -65,7 +65,7 @@ const CtaBannerSection = () => {
               viewport={{ once: true }}
               className="text-white text-lg md:text-xl mb-10 max-w-2xl font-medium"
             >
-              En una llamada de 15 minutos te contamos qué se puede mejorar y cuánto cuesta. Así de simple.
+              En 15 minutos te decimos qué mejorar y el precio. Sin vueltas.
             </motion.p>
 
             {/* Buttons */}
@@ -77,18 +77,22 @@ const CtaBannerSection = () => {
               className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
             >
               <a
-                href="#contact"
+                href="https://wa.me/5491135117785"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#E47223] text-white px-6 py-3.5 rounded-xl font-bold text-sm shadow-[0_10px_30px_rgba(228,114,35,0.3)] hover:shadow-[0_15px_40px_rgba(228,114,35,0.4)] hover:-translate-y-1 transition-all duration-300"
               >
-                Hablar con un experto
+                Habla con un experto
                 <ArrowRight className="w-5 h-5" />
               </a>
 
               <a
-                href="tel:+5491135117785"
+                href="https://wa.me/5491135117785"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full sm:w-auto flex items-center justify-center gap-2 bg-white/5 text-white px-6 py-3.5 rounded-xl font-bold text-sm hover:-translate-y-1 transition-all duration-300"
               >
-                Llamar ahora
+                Llamar por WhatsApp
                 <ArrowRight className="w-5 h-5" />
               </a>
             </motion.div>

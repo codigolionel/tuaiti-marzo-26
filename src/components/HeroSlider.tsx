@@ -63,7 +63,9 @@ const HeroImage = () => {
           >
 
             <a
-              href="#contact"
+              href="https://wa.me/5491135117785"
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#E47223] mt-5 md:mt-0 text-white px-6 py-3.5 rounded-xl font-bold text-base shadow-[0_10px_30px_rgba(228,114,35,0.3)] hover:shadow-[0_15px_40px_rgba(228,114,35,0.4)] hover:-translate-y-1 transition-all duration-300"
             >
               Contactar ahora
