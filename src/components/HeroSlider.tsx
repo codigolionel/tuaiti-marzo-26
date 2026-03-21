@@ -40,7 +40,7 @@ const HeroImage = () => {
             Tu tecnología funcionando. <br className="hidden md:block" />
 
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1F3A5F] to-[#2563EB]">
-              Sin sorpresas, sin sobrecostos.
+              sin sorpresas, sin sobrecostos.
             </span>
           </motion.h1>
 
