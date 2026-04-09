@@ -95,6 +95,13 @@ if $DEPLOY_FRONTEND; then
   info "Deploying frontend to ${REMOTE_DOCROOT}..."
   eval rsync ${RSYNC_OPTS} \
     --exclude='api/' \
+    --exclude='stats/' \
+    --exclude='monitors/' \
+    --exclude='scripts/' \
+    --exclude='img/' \
+    --exclude='demo/' \
+    --exclude='remoto/' \
+    --exclude='tools/' \
     dist/ "${SSH_HOST}:${REMOTE_DOCROOT}/"
 
   info "Frontend deployed."
