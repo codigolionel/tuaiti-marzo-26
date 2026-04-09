@@ -17,7 +17,7 @@ const bulletPoints = [
 
 const ExpertiseSection = () => {
   // Spring animation settings for a premium feel
-  const springConfig: any = { type: "spring", stiffness: 100, damping: 20 };
+  const springConfig = { type: "spring" as const, stiffness: 100, damping: 20 };
 
   return (
     <section className="py-20 md:py-32 bg-[#F8FAFC]">

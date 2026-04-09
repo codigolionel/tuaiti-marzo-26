@@ -3,7 +3,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 
 const HeroImage = () => {
 
-  const springConfig: any = { type: "spring", stiffness: 100, damping: 20 };
+  const springConfig = { type: "spring" as const, stiffness: 100, damping: 20 };
 
   return (
     <section

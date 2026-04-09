@@ -4,7 +4,7 @@ import { ArrowRight, Headphones } from "lucide-react";
 // You can keep using publish.webp as an underlying texture, 
 // or remove it completely. I'll use it as a subtle overlay.
 const CtaBannerSection = () => {
-  const springConfig: any = { type: "spring", stiffness: 100, damping: 20 };
+  const springConfig = { type: "spring" as const, stiffness: 100, damping: 20 };
 
   return (
     <section className="py-6 md:py-8 bg-background">

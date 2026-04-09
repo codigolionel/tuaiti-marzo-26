@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_URL || "https://tuaiti.com.ar";
 
 declare global {
   interface Window {
-    turnstile: any;
+    turnstile: { render: (el: string | HTMLElement, opts: Record<string, unknown>) => string; reset: (id: string) => void; remove: (id: string) => void };
   }
 }
 
@@ -81,8 +81,8 @@ const ContactSection = () => {
       if (window.turnstile && widgetIdRef.current) {
         window.turnstile.reset(widgetIdRef.current);
       }
-    } catch (err: any) {
-      setError(err.message || "Error inesperado. Intentá de nuevo.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Error inesperado. Intentá de nuevo.");
     } finally {
       setLoading(false);
     }
