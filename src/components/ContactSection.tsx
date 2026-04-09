@@ -1,6 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Send } from "lucide-react";
+
+const TURNSTILE_SITE_KEY = "0x4AAAAAAC2xB1nEwP9D0xXi";
+const API_URL = import.meta.env.VITE_API_URL || "https://tuaiti.com.ar";
+
+declare global {
+  interface Window {
+    turnstile: any;
+  }
+}
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -9,14 +18,75 @@ const ContactSection = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const tokenRef = useRef<string>("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Esperar a que el script de Turnstile cargue y renderizar el widget
+    const renderWidget = () => {
+      if (!window.turnstile || !turnstileRef.current || widgetIdRef.current) return;
+      widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: "light",
+        callback: (token: string) => { tokenRef.current = token; },
+        "expired-callback": () => { tokenRef.current = ""; },
+      });
+    };
+
+    if (window.turnstile) {
+      renderWidget();
+    } else {
+      // Polling breve hasta que cargue el script
+      const interval = setInterval(() => {
+        if (window.turnstile) {
+          clearInterval(interval);
+          renderWidget();
+        }
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormData({ name: "", contact: "", message: "" });
-  };
+    setError("");
+
+    if (!tokenRef.current) {
+      setError("Esperá a que se complete la verificación de seguridad.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/api/contact.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, token: tokenRef.current }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Error al enviar el mensaje.");
+      }
+
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 4000);
+      setFormData({ name: "", contact: "", message: "" });
+      tokenRef.current = "";
+      if (window.turnstile && widgetIdRef.current) {
+        window.turnstile.reset(widgetIdRef.current);
+      }
+    } catch (err: any) {
+      setError(err.message || "Error inesperado. Intentá de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  }, [formData]);
 
   return (
     <section
@@ -204,11 +274,16 @@ const ContactSection = () => {
                     </div>
 
                     <div className="pt-2">
+                      <div ref={turnstileRef} className="mb-3" />
+                      {error && (
+                        <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+                      )}
                       <button
                         type="submit"
-                        className="bg-[#E47223] hover:bg-[#c95f1a] text-white font-bold text-sm px-8 py-3.5 rounded-md transition-colors duration-300 w-full"
+                        disabled={loading}
+                        className="bg-[#E47223] hover:bg-[#c95f1a] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm px-8 py-3.5 rounded-md transition-colors duration-300 w-full"
                       >
-                        Enviar consulta
+                        {loading ? "Enviando..." : "Enviar consulta"}
                       </button>
                       <p className="text-center text-sm text-gray-500 mt-4 mb-4">
                         O si preferís, <a href="https://wa.me/+5491135117785" target="_blank" rel="noopener noreferrer" className="text-[#E47223]  font-medium hover:underline">escribinos por WhatsApp</a>.
