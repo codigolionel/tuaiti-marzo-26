@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const Footer = () => {
   return (
     <footer style={{ background: "linear-gradient(135deg, #1F3A5F 0%, #0f1e30 50%, #0a0f1a 100%)" }} className="text-white">
@@ -45,7 +47,7 @@ const Footer = () => {
           {/* Column 3: Services */}
           <div className="lg:col-span-5">
             <h4 className="font-semibold mb-6 text-white text-lg tracking-wide">Servicios</h4>
-            <ul className="space-y-3">
+            <ul className="space-y-3 mb-6">
               {[
                 "Servidores siempre bajo control",
                 "Tu correo y archivos, siempre disponibles",
@@ -54,16 +56,17 @@ const Footer = () => {
                 "Menos tareas manuales, más productividad",
                 "Soporte rápido cuando algo falla",
               ].map((service) => (
-                <li key={service}>
-                  <a
-                    href="#services"
-                    className="text-sm font-medium text-white/60 hover:text-white hover:translate-x-1 inline-block transition-all duration-300"
-                  >
-                    {service}
-                  </a>
+                <li key={service} className="text-sm font-medium text-white/60">
+                  {service}
                 </li>
               ))}
             </ul>
+            <a
+              href="#services"
+              className="text-sm font-medium text-white/80 hover:text-white inline-flex items-center gap-1 transition-colors duration-300"
+            >
+              Ver todos los servicios <span aria-hidden="true">→</span>
+            </a>
           </div>
         </div>
       </div>
@@ -75,12 +78,12 @@ const Footer = () => {
             © 2026 Tuaiti | Tecnología para Empresas | Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-4">
-            <a
-              href="#"
+            <Link
+              to="/politica-de-privacidad"
               className="text-xs text-white/40 hover:text-white transition-colors"
             >
-              Politica de Privacidad
-            </a>
+              Política de Privacidad
+            </Link>
           </div>
         </div>
       </div>

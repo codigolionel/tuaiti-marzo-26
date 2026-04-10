@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Wrench, Search, Monitor, AlertTriangle } from "lucide-react";
+import { Wrench, Search, Monitor, AlertTriangle, ArrowRight } from "lucide-react";
 
 // Datos de los pasos del proceso - Textos resumidos sin número
 const pasos = [
@@ -43,13 +43,8 @@ const tarjetaVariants = {
 export default function ComoTrabajamos() {
   return (
     // Sección principal con más "aire" arriba (padding-top aumentado)
-    <section className="relative bg-[#f3f6fa] pt-24 pb-12 lg:pt-32 lg:pb-16 flex flex-col justify-center overflow-hidden">
+    <section className="relative bg-[#f3f6fa] pt-24 pb-20 lg:pt-32 lg:pb-28 flex flex-col justify-center overflow-hidden">
 
-      {/* Elementos decorativos (Blobs) más sutiles */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-[-50%] right-[10%] w-[500px] h-[500px] bg-[#1F3A5F]/[0.02] rounded-full blur-3xl" />
-        <div className="absolute bottom-[-50%] left-[10%] w-[400px] h-[400px] bg-[#E47223]/[0.02] rounded-full blur-3xl" />
-      </div>
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -113,6 +108,23 @@ export default function ComoTrabajamos() {
             })}
           </motion.div>
         </div>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          viewport={{ once: true }}
+          className="text-center mt-10"
+        >
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 bg-[#E47223] hover:bg-[#c95f1a] text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-[0_10px_30px_rgba(228,114,35,0.3)] hover:shadow-[0_15px_40px_rgba(228,114,35,0.4)] hover:-translate-y-1 transition-all duration-300"
+          >
+            Pedí tu diagnóstico gratis
+            <ArrowRight className="w-5 h-5" />
+          </a>
+        </motion.div>
       </div>
     </section>
   );

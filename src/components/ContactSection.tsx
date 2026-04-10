@@ -1,6 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Send } from "lucide-react";
+
+const TURNSTILE_SITE_KEY = "0x4AAAAAAC2xB1nEwP9D0xXi";
+const API_URL = import.meta.env.VITE_API_URL || "https://tuaiti.com.ar";
+
+declare global {
+  interface Window {
+    turnstile: { render: (el: string | HTMLElement, opts: Record<string, unknown>) => string; reset: (id: string) => void; remove: (id: string) => void };
+  }
+}
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -9,39 +18,98 @@ const ContactSection = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const tokenRef = useRef<string>("");
+  const turnstileRef = useRef<HTMLDivElement>(null);
+  const widgetIdRef = useRef<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Esperar a que el script de Turnstile cargue y renderizar el widget
+    const renderWidget = () => {
+      if (!window.turnstile || !turnstileRef.current || widgetIdRef.current) return;
+      widgetIdRef.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: TURNSTILE_SITE_KEY,
+        theme: "light",
+        callback: (token: string) => { tokenRef.current = token; },
+        "expired-callback": () => { tokenRef.current = ""; },
+      });
+    };
+
+    if (window.turnstile) {
+      renderWidget();
+    } else {
+      // Polling breve hasta que cargue el script
+      const interval = setInterval(() => {
+        if (window.turnstile) {
+          clearInterval(interval);
+          renderWidget();
+        }
+      }, 200);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(formData);
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setFormData({ name: "", contact: "", message: "" });
-  };
+    setError("");
+
+    if (!tokenRef.current) {
+      setError("Esperá a que se complete la verificación de seguridad.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/api/contact.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, token: tokenRef.current }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Error al enviar el mensaje.");
+      }
+
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 4000);
+      setFormData({ name: "", contact: "", message: "" });
+      tokenRef.current = "";
+      if (window.turnstile && widgetIdRef.current) {
+        window.turnstile.reset(widgetIdRef.current);
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Error inesperado. Intentá de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  }, [formData]);
 
   return (
     <section
       id="contact"
-      className="relative w-full max-lg:bg-[linear-gradient(to_bottom,#f3f6fa,#d6e2ef)] lg:bg-[linear-gradient(to_bottom,#1A1C1D_0%,#1A1C1D_55%,#E5E9F5_55%,#E5E9F5_100%)] z-0"
+      className="relative w-full bg-[#E5E9F5] z-0"
     >
       <div className="container mx-auto py-16 lg:py-24 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
           {/* LEFT COLUMN */}
-          <div className="lg:col-span-6 flex flex-col justify-between">
+          <div className="lg:col-span-6 flex flex-col">
             {/* Dark Section Content */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="text-white pt-4 pb-8 lg:pb-12 max-lg:relative"
+              className="relative text-white pt-4 pb-8 lg:pb-12"
             >
-              {/* Full bleed dark background for mobile only */}
-              <div className="absolute top-[-4rem] bottom-0 w-[4000px] left-1/2 -translate-x-1/2 bg-[#1A1C1D] -z-10 lg:hidden" />
+              {/* Dark background that adapts to content height */}
+              <div className="absolute top-[-4rem] bottom-0 left-1/2 -translate-x-1/2 w-[200vw] bg-[#1A1C1D] -z-10" />
 
-              <span className="inline-block border border-gray-600 bg-black/20 text-[10px] sm:text-xs font-bold tracking-widest px-3 py-1.5 rounded mb-6 uppercase max-lg:relative max-lg:z-10">
-                Contáctanos
-              </span>
-              <h2 className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold leading-tight tracking-tight shadow-sm max-lg:relative max-lg:z-10">
+
+              <h2 className="text-4xl md:text-5xl lg:text-[3.25rem] font-bold leading-tight tracking-tight shadow-sm">
                 Asóciate con nosotros para una solución informática integral.
               </h2>
             </motion.div>
@@ -54,77 +122,30 @@ const ContactSection = () => {
               viewport={{ once: true }}
               className="text-[#1F3A5F] pt-4 lg:pt-8"
             >
-              <p className="text-lg font-medium leading-relaxed mb-6 max-lg:text-[#1F3A5F] text-[#d4d4d4]">
+              <p className="text-lg font-medium leading-relaxed mb-6 text-[#505050]">
                 Si tenés dudas sobre qué necesita tu empresa a nivel tecnológico, escribinos o llamanos. Te orientamos sin compromiso y sin presión de venta.
               </p>
 
-              <p className="text-xl font-bold mb-4 max-lg:text-[#1F3A5F] text-[#d4d4d4]">
-                <a
-                  href="https://wa.me/5491135117785"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Llamanos al: +54 9 11-3511-7785
-                </a>
-              </p>
 
 
-
-              <h4 className="font-bold text-xl mt-6 mb-6">Tus beneficios:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-                <ul className="space-y-3 font-semibold text-sm">
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="text-[#1A11D3] w-5 h-5 flex-shrink-0" />
-                    Sin ataduras a marcas: recomendamos la mejor opción
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="text-[#1A11D3] w-5 h-5 flex-shrink-0" />
-                    Respuesta en el día para urgencias
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="text-[#1A11D3] w-5 h-5 flex-shrink-0" />
-                    25 años de experiencia real con PYMES
-                  </li>
-                </ul>
-                <ul className="space-y-3 font-semibold text-sm">
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="text-[#1A11D3] w-5 h-5 flex-shrink-0" />
-                    Presupuestos claros, sin costos ocultos
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="text-[#1A11D3] w-5 h-5 flex-shrink-0" />
-                    Un referente único para toda tu tecnología
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <CheckCircle2 className="text-[#1A11D3] w-5 h-5 flex-shrink-0" />
-                    Sin contratos de permanencia
-                  </li>
-                </ul>
-              </div>
-
-              <h4 className="font-bold text-xl mb-8">¿Qué pasa después?</h4>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
-                <div className="flex items-start sm:items-center gap-3 max-w-[160px]">
-                  <span className="text-4xl sm:text-3xl font-normal text-[#1F3A5F]">1</span>
-                  <p className="text-sm font-semibold">
-                    Agendamos una llamada a tu conveniencia
-                  </p>
-                </div>
-                <div className="text-gray-300 text-2xl font-light hidden sm:block">›</div>
-                <div className="flex items-start sm:items-center gap-3 max-w-[160px]">
-                  <span className="text-4xl sm:text-3xl font-normal text-[#1F3A5F]">2</span>
-                  <p className="text-sm font-semibold">
-                    Hacemos una reunión de consultoría
-                  </p>
-                </div>
-                <div className="text-gray-300 text-2xl font-light hidden sm:block">›</div>
-                <div className="flex items-start sm:items-center gap-3 max-w-[160px]">
-                  <span className="text-4xl sm:text-3xl font-normal text-[#1F3A5F]">3</span>
-                  <p className="text-sm font-semibold">
-                    Preparamos una propuesta
-                  </p>
-                </div>
-              </div>
+              <ul className="space-y-3 font-semibold text-sm mt-8">
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="text-[#1F3A5F] w-5 h-5 flex-shrink-0" />
+                  Sin ataduras a marcas ni contratos de permanencia
+                </li>
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="text-[#1F3A5F] w-5 h-5 flex-shrink-0" />
+                  Respuesta en el día para urgencias
+                </li>
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="text-[#1F3A5F] w-5 h-5 flex-shrink-0" />
+                  25 años de experiencia real con PYMES
+                </li>
+                <li className="flex items-center gap-3">
+                  <CheckCircle2 className="text-[#1F3A5F] w-5 h-5 flex-shrink-0" />
+                  Presupuestos claros, sin costos ocultos
+                </li>
+              </ul>
             </motion.div>
           </div>
 
@@ -135,7 +156,7 @@ const ContactSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
               viewport={{ once: true }}
-              className="bg-white rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-8 md:p-10 border border-gray-100 relative h-full flex flex-col justify-center"
+              className="bg-white rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] p-8 md:p-10 border border-gray-100 relative"
             >
               {submitted ? (
                 <div className="text-center py-16">
@@ -204,16 +225,20 @@ const ContactSection = () => {
                     </div>
 
                     <div className="pt-2">
+                      <div ref={turnstileRef} className="mb-3" />
+                      {error && (
+                        <p className="text-red-500 text-sm text-center mb-3">{error}</p>
+                      )}
                       <button
                         type="submit"
-                        className="bg-[#E47223] hover:bg-[#c95f1a] text-white font-bold text-sm px-8 py-3.5 rounded-md transition-colors duration-300 w-full"
+                        disabled={loading}
+                        className="bg-[#E47223] hover:bg-[#c95f1a] disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold text-sm px-8 py-3.5 rounded-md transition-colors duration-300 w-full"
                       >
-                        Enviar consulta
+                        {loading ? "Enviando..." : "Enviar consulta"}
                       </button>
                       <p className="text-center text-sm text-gray-500 mt-4 mb-4">
-                        O si preferís, <a href="https://wa.me/+5491135117785" target="_blank" rel="noopener noreferrer" className="text-[#E47223]  font-medium hover:underline">escribinos por WhatsApp</a>.
+                        O si preferís:
                       </p>
-                      {/* WhatsApp CTA */}
                       <a
                         href="https://wa.me/5491135117785"
                         target="_blank"

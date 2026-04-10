@@ -1,4 +1,3 @@
-import ExpertiseSection from "@/components/ExpertiseSection";
 import Navbar from "@/components/Navbar";
 import HeroSlider from "@/components/HeroSlider";
 import AboutSection from "@/components/AboutSection";
